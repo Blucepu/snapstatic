@@ -24,6 +24,12 @@ bun install
 
 项目名使用小写字母 + 连字符，如 `client-report`、`product-showcase`。
 
+在 `index.html` 的 `<head>` 中添加默认图标（用户可后续自行替换）：
+
+```html
+<link rel="icon" type="image/x-icon" href="https://zbanx.com/favicon.ico" />
+```
+
 ---
 
 ## 步骤二：安装并配置 Tailwind CSS v4
@@ -83,15 +89,13 @@ export default defineConfig({
 }
 ```
 
-**`tsconfig.app.json`** — 在 `compilerOptions` 中同样添加：
+**`tsconfig.app.json`** — **不要替换整个文件**，在 Vite 生成的 `tsconfig.app.json` 的 `compilerOptions` 中**追加**以下三项：
 
 ```json
 {
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": { "@/*": ["./src/*"] },
-    "ignoreDeprecations": "6.0"
-  }
+  "baseUrl": ".",
+  "paths": { "@/*": ["./src/*"] },
+  "ignoreDeprecations": "6.0"
 }
 ```
 
@@ -108,7 +112,7 @@ bun add -d @types/node
 ### 4-1 初始化 shadcn
 
 ```bash
-bunx shadcn@latest init -t vite --base radix -p nova --css-variables -y
+bunx --bun shadcn@latest init -t vite --base radix -p nova --css-variables -y
 ```
 
 完成后验证根目录出现 `components.json`，`src/components/ui/` 目录已创建。
@@ -116,8 +120,8 @@ bunx shadcn@latest init -t vite --base radix -p nova --css-variables -y
 ### 4-2 安装 coss 组件和颜色 token
 
 ```bash
-bunx shadcn@latest add @coss/ui -y --overwrite
-bunx shadcn@latest add @coss/colors-neutral -y --overwrite
+bunx --bun shadcn@latest add @coss/ui -y --overwrite
+bunx --bun shadcn@latest add @coss/colors-neutral -y --overwrite
 ```
 
 > `@coss/colors-neutral` 会通过 `@fontsource-variable/geist` 自动配置字体，
@@ -140,7 +144,7 @@ coss 自动生成的 `@theme` 块只定义 `--font-sans` 和 `--font-heading`，
 ## 步骤五：安装 AntV Infographic（询问用户）
 
 > **询问用户**：是否安装 AntV Infographic？
-> 安装后可生成精美的信息图表（流程图、对比图、数据图等 276 个模板）。
+> 安装后可生成精美的信息图表（流程图、对比图、数据图等 200+ 种模板）。
 > - **是** → 执行安装
 > - **否** → 跳至步骤六
 
@@ -197,7 +201,9 @@ mkdir -p src/pages src/components/blocks src/pages/dev src/hooks
 rm -f src/App.tsx src/App.css
 ```
 
-**`src/router.tsx`：**
+**`src/router.tsx`：** 根据步骤五用户是否安装了 AntV Infographic，选择对应版本。
+
+**版本 A — 已安装 Infographic：**
 
 ```tsx
 import { HashRouter, Routes, Route } from "react-router-dom"
@@ -226,6 +232,35 @@ export default function Router() {
         )}
         {import.meta.env.DEV && ChartsPage && (
           <Route path="/dev/charts" element={<Suspense fallback={<Loading />}><ChartsPage /></Suspense>} />
+        )}
+      </Routes>
+    </HashRouter>
+  )
+}
+```
+
+**版本 B — 未安装 Infographic：**
+
+```tsx
+import { HashRouter, Routes, Route } from "react-router-dom"
+import { lazy, Suspense } from "react"
+import HomePage from "./pages/HomePage"
+
+const ComponentsPage = import.meta.env.DEV
+  ? lazy(() => import("./pages/dev/ComponentsPage"))
+  : null
+
+const Loading = () => <div className="p-8 text-muted-foreground">加载中...</div>
+
+export default function Router() {
+  return (
+    <HashRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        {/* 新增页面在此追加：<Route path="/xxx" element={<XxxPage />} /> */}
+
+        {import.meta.env.DEV && ComponentsPage && (
+          <Route path="/dev/components" element={<Suspense fallback={<Loading />}><ComponentsPage /></Suspense>} />
         )}
       </Routes>
     </HashRouter>

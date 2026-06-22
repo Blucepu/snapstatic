@@ -131,7 +131,7 @@ import { ZapIcon, ShieldCheckIcon } from "lucide-react"
 
 > 仅安装了 `@antv/infographic` 的项目适用。
 
-**统一通过 `useInfographic` hook 使用，不直接 `new Infographic()`。**
+统一通过 `useInfographic` hook 渲染，不要直接 `new Infographic()`：
 
 ```
 import { useInfographic } from "@/hooks/useInfographic"
@@ -213,3 +213,4 @@ return <div ref={chartRef} className="w-full" />
 - Alert 错误不用 `variant="destructive"`，用 `variant="error"`
 - 图标不用数字 `size` prop，用 Tailwind class
 - 不用 `echarts` / `recharts` 等其他图表库，统一用 `@antv/infographic`
+- 图表渲染不要直接 `new Infographic()`，统一通过 `useInfographic` hook

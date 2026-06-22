@@ -119,11 +119,13 @@ Dialog、Menu         → 直接使用组件自带的开关控制
 
 ### 生成原则
 
-同样不写死代码，而是按以下规则**现场生成**：
+不写死代码，而是按以下规则**现场生成**：
 
 - 图表内容使用**真实可用的中文业务场景**，不用"示例 A / 示例 B"这类无意义占位
 - 每个图表旁边标注模板名称（小字，text-xs text-muted-foreground）
-- 每类 2 个代表性示例，覆盖 7 大类别
+- 统一使用 `useInfographic` hook + syntax 字符串渲染
+- 展示 9 个经典模板，每个 1 个示例
+- 以上推荐模板名基于 AntV Infographic 官方命名规则（前缀 + `-simple`）。如渲染时报错"template not found"，请访问 https://infographic.antv.vision/gallery 确认实际可用模板名
 
 **模板文档：** `https://infographic.antv.vision/learn/infographic-syntax`
 **模板画廊：** `https://infographic.antv.vision/gallery`
@@ -135,37 +137,41 @@ Dialog、Menu         → 直接使用组件自带的开关控制
 与 ComponentsPage 相同：
 - 固定顶栏，标题"图表示例"，Badge 标注"仅开发环境"
 - `container mx-auto px-6 py-8 space-y-12`
-- 每类别一个 `<section>`，`<h2>` 中英文标题 + 用途说明
+- 每大类别一个 `<section>`，`<h2>` 中英文标题 + 用途说明
+- 每子类型一个 subsection，`<h3>` 子类型名称 + 场景说明
 - 图表容器：`<div ref={chartRef} className="w-full rounded-xl border p-2" />`
-- 同类 2 个示例用 `grid grid-cols-1 lg:grid-cols-2 gap-6` 并排
 
 ---
 
-### 7 大类别与选模板规则
+### 经典模板推荐
 
-| 类别 | 适用场景 | 推荐模板（各选 1-2 个） |
-|------|---------|----------------------|
-| **List 列表** | 要点列举、功能清单、特性介绍 | `list-row-horizontal-icon-arrow`、`list-grid-badge-card` |
-| **Sequence 序列** | 步骤流程、时间线、路线图 | `sequence-ascending-steps`、`sequence-timeline-simple` |
-| **Chart 数据图** | 数值对比、占比分析、趋势变化 | `chart-column-simple`、`chart-pie-compact-card` |
-| **Comparison 对比** | SWOT 分析、方案对比、双向对比 | `compare-swot`、`compare-binary-horizontal-simple-fold` |
-| **Hierarchy 层级** | 组织架构、分类树、思维导图 | `hierarchy-structure`、`hierarchy-tree-curved-line-rounded-rect-node` |
-| **Relation 关系** | 系统架构、流程依赖、节点关系 | `relation-dagre-flow-tb-simple-circle-node` |
-| **Quadrant 象限** | 优先级矩阵、四象限决策分析 | `compare-quadrant-quarter-simple-card` |
+以下精选了 7 大类别中最具代表性的 9 个模板。更多变体请访问 https://infographic.antv.vision/gallery。
+
+| 类别 | 模板 | 场景 | 数据字段 |
+|------|------|------|---------|
+| Chart | `chart-column-simple` | 数值对比 | values |
+| Sequence | `sequence-steps-simple` | 步骤流程 | sequences |
+| Sequence | `sequence-timeline-simple` | 时间线/里程碑 | sequences |
+| Comparison | `compare-swot` | SWOT 分析 | compares |
+| Hierarchy | `hierarchy-structure` | 组织架构 | root+children |
+| List | `list-grid-compact-card` | 功能清单 | lists |
+| List | `list-row-horizontal-icon-arrow` | 横向列表 | lists |
+| Relation | `relation-dagre-flow-tb-simple-circle-node` | 流程图/架构图 | nodes+relations |
+| Quadrant | `quadrant-quarter-simple-card` | 四象限分析 | compares |
 
 ---
 
 ### 图表内容生成规则
 
-每个图表的 `syntax` 内容必须是**有意义的中文业务数据**，参考方向：
+每个图表的内容必须是**有意义的中文业务数据**，参考方向：
 
 ```
-List       → 产品优势、技术栈清单、服务亮点
-Sequence   → 项目交付流程、公司发展历程、用户使用路径
-Chart      → 季度营收、用户来源分布、各部门占比
+Chart      → 营收趋势、用户增长曲线、市场份额饼图、部门人数柱状图、关键词云
+Sequence   → 产品交付流程、公司发展时间线、用户使用路径、销售漏斗、项目路线图
 Comparison → 产品 SWOT、自建 vs 采购、两种方案对比
-Hierarchy  → 公司组织架构、产品功能模块树
-Relation   → 系统架构图、前后端调用关系
+Hierarchy  → 公司组织架构、产品功能模块树、产品功能脑图
+List       → 产品优势、技术栈清单、服务亮点
+Relation   → 微服务架构拓扑、API 调用关系、团队协作网络
 Quadrant   → 功能优先级矩阵、需求四象限
 ```
 
@@ -188,12 +194,27 @@ theme
 
 ---
 
-### useInfographic 使用方式
+### 图表使用方式
 
-```
+统一通过 `useInfographic` hook + syntax 字符串：
+
+```tsx
 import { useInfographic } from "@/hooks/useInfographic"
 
-const chartRef = useInfographic({ syntax: `...`, height: "280px" })
+const chartRef = useInfographic({
+  syntax: `infographic sequence-timeline-simple
+data
+  title 公司发展历程
+  sequences
+    - label 成立
+      desc 2020年
+      icon rocket
+    - label A轮
+      desc 2021年
+      icon chart line`,
+  height: "300px"
+})
+
 return <div ref={chartRef} className="w-full rounded-xl border p-2" />
 ```
 

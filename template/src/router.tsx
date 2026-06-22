@@ -17,6 +17,7 @@ export default function Router() {
     <HashRouter>
       <Routes>
         <Route path="/" element={<HomePage />} />
+        {/* 新增页面在此追加：<Route path="/xxx" element={<XxxPage />} /> */}
 
         {import.meta.env.DEV && ComponentsPage && (
           <Route path="/dev/components" element={<Suspense fallback={<Loading />}><ComponentsPage /></Suspense>} />

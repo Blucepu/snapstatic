@@ -1,412 +1,311 @@
-import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
 import { useInfographic } from "@/hooks/useInfographic"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
+import { HomeIcon, ExternalLinkIcon } from "lucide-react"
+import { Link } from "react-router-dom"
 
-function ChartSection({ title, description, children }: { title: string; description?: string; children: React.ReactNode }) {
+function Example({ title, desc, children }: { title: string; desc: string; children: React.ReactNode }) {
   return (
-    <section>
-      <h2 className="text-2xl font-semibold tracking-tight">{title}</h2>
-      {description && <p className="mt-1 text-sm text-muted-foreground">{description}</p>}
-      <div className="mt-4 grid grid-cols-1 lg:grid-cols-2 gap-6">{children}</div>
-    </section>
-  )
-}
-
-function ChartCard({ syntax, label, height = "280px" }: { syntax: string; label: string; height?: string }) {
-  const chartRef = useInfographic({ syntax, height })
-  return (
-    <div className="rounded-xl border p-3 space-y-2">
-      <div ref={chartRef} className="w-full" />
-      <p className="text-xs text-muted-foreground text-center">{label}</p>
+    <div>
+      <h3 className="text-base font-semibold mt-4">{title}</h3>
+      <p className="text-sm text-muted-foreground mb-2">{desc}</p>
+      {children}
     </div>
   )
 }
 
-const listRowSyntax = `infographic list-row-horizontal-icon-arrow
-data
-  title 产品核心优势
-  lists
-    - icon rocket
-      label 极速部署
-      desc 一键部署到云端，5分钟上线
-    - icon shield check
-      label 安全可靠
-      desc 企业级加密，99.99%可用性
-    - icon chart line
-      label 弹性扩展
-      desc 按需扩容，自动负载均衡
-    - icon lightbulb
-      label 智能分析
-      desc AI驱动的数据洞察
-theme
-  palette #1a1a2e #16213e #0f3460 #533483`
-
-const listGridSyntax = `infographic list-grid-badge-card
-data
-  title 技术栈清单
-  lists
-    - icon code
-      label React 19
-      desc 前端框架
-    - icon zap
-      label Vite 8
-      desc 构建工具
-    - icon palette
-      label Tailwind v4
-      desc 样式框架
-    - icon database
-      label PostgreSQL
-      desc 关系数据库
-    - icon server
-      label Node.js
-      desc 后端运行时
-    - icon cloud
-      label Docker
-      desc 容器化部署
-theme
-  palette #2d3436 #636e72 #00b894 #6c5ce7`
-
-const sequenceStepsSyntax = `infographic sequence-ascending-steps
-data
-  title 项目交付流程
-  sequences
-    - icon clipboard list
-      label 需求分析
-      desc 1-2周
-      value 1
-    - icon pencil
-      label UI设计
-      desc 2-3周
-      value 2
-    - icon code
-      label 开发实现
-      desc 4-6周
-      value 3
-    - icon test tubes
-      label 测试验证
-      desc 1-2周
-      value 4
-    - icon rocket
-      label 部署上线
-      desc 1周
-      value 5
-theme
-  palette #0f3460 #16213e #1a1a2e #533483 #e94560`
-
-const sequenceTimelineSyntax = `infographic sequence-timeline-simple
-data
-  title 公司发展历程
-  sequences
-    - label 2019
-      desc 公司成立，获天使轮融资
-    - label 2020
-      desc 产品上线，用户突破10万
-    - label 2021
-      desc 完成A轮融资，团队扩至50人
-    - label 2023
-      desc 营收破亿，布局海外市场
-    - label 2025
-      desc 上市筹备，估值超50亿
-theme
-  palette #6c5ce7 #a29bfe #dfe6e9 #2d3436`
-
-const chartColumnSyntax = `infographic chart-column-simple
-data
-  title 季度营收对比（万元）
-  values
-    - label Q1
-      value 320
-    - label Q2
-      value 480
-    - label Q3
-      value 560
-    - label Q4
-      value 720
-theme
-  palette #0984e3 #74b9ff #dfe6e9`
-
-const chartPieSyntax = `infographic chart-pie-compact-card
-data
-  title 用户来源分布
-  values
-    - label 搜索引擎
-      value 42
-    - label 社交媒体
-      value 28
-    - label 直接访问
-      value 18
-    - label 邮件营销
-      value 12
-theme
-  palette #e17055 #fdcb6e #00b894 #0984e3`
-
-const compareSwotSyntax = `infographic compare-swot
-data
-  title 产品SWOT分析
-  compares
-    - label 优势 Strengths
-      lists
-        - label 技术壁垒高
-        - label 用户粘性强
-        - label 团队经验丰富
-    - label 劣势 Weaknesses
-      lists
-        - label 品牌知名度低
-        - label 资金储备有限
-        - label 市场覆盖不足
-    - label 机会 Opportunities
-      lists
-        - label 行业快速增长
-        - label 政策利好支持
-        - label 竞品退出市场
-    - label 威胁 Threats
-      lists
-        - label 巨头入场竞争
-        - label 用户获取成本上升
-        - label 技术迭代加速
-theme
-  palette #00b894 #d63031 #0984e3 #fdcb6e`
-
-const compareBinarySyntax = `infographic compare-binary-horizontal-simple-fold
-data
-  title 自建 vs 采购方案对比
-  compares
-    - label 自建方案
-      lists
-        - icon check
-          label 完全定制化
-        - icon check
-          label 长期成本更低
-        - icon x
-          label 开发周期长
-        - icon x
-          label 维护成本高
-    - label 采购方案
-      lists
-        - icon check
-          label 快速上线
-        - icon check
-          label 专业维护
-        - icon x
-          label 定制受限
-        - icon x
-          label 持续付费
-theme
-  palette #00b894 #d63031 #dfe6e9`
-
-const hierarchyStructureSyntax = `infographic hierarchy-structure
-data
-  title 公司组织架构
-  root
-    label 总裁
-    children
-      - label 技术部
-        children
-          - label 前端组
-          - label 后端组
-          - label 运维组
-      - label 产品部
-        children
-          - label 产品设计
-          - label 用户研究
-      - label 市场部
-        children
-          - label 品牌推广
-          - label 渠道运营
-theme
-  palette #2d3436 #636e72 #0984e3 #00b894 #6c5ce7`
-
-const hierarchyTreeSyntax = `infographic hierarchy-tree-curved-line-rounded-rect-node
-data
-  title 产品功能模块
-  root
-    label 智能平台
-    children
-      - label 数据管理
-        children
-          - label 数据采集
-          - label 数据清洗
-          - label 数据存储
-      - label 分析引擎
-        children
-          - label 实时监控
-          - label 报表生成
-          - label 预测模型
-      - label 用户中心
-        children
-          - label 权限管理
-          - label 消息通知
-theme
-  palette #6c5ce7 #a29bfe #dfe6e9 #2d3436`
-
-const relationDagreSyntax = `infographic relation-dagre-flow-tb-simple-circle-node
-data
-  title 系统架构调用关系
-  nodes
-    - id gateway
-      label API网关
-    - id auth
-      label 认证服务
-    - id user
-      label 用户服务
-    - id order
-      label 订单服务
-    - id pay
-      label 支付服务
-    - id db
-      label 数据库
-  relations
-    - source gateway
-      target auth
-    - source gateway
-      target user
-    - source gateway
-      target order
-    - source order
-      target pay
-    - source user
-      target db
-    - source order
-      target db
-    - source pay
-      target db
-theme
-  palette #0984e3 #00b894 #fdcb6e #dfe6e9`
-
-const relationFlowSyntax = `infographic relation-dagre-flow-tb-simple-circle-node
-data
-  title 前端构建流程
-  nodes
-    - id src
-      label 源代码
-    - id ts
-      label TypeScript编译
-    - id vite
-      label Vite打包
-    - id css
-      label CSS处理
-    - id dist
-      label 构建产物
-    - id cdn
-      label CDN分发
-  relations
-    - source src
-      target ts
-    - source ts
-      target vite
-    - source src
-      target css
-    - source css
-      target vite
-    - source vite
-      target dist
-    - source dist
-      target cdn
-theme
-  palette #e17055 #fdcb6e #00b894 #dfe6e9`
-
-const quadrantSyntax = `infographic compare-quadrant-quarter-simple-card
-data
-  title 功能优先级矩阵
-  compares
-    - label 高价值 低成本
-      lists
-        - label 用户登录优化
-        - label 消息推送
-    - label 高价值 高成本
-      lists
-        - label AI推荐引擎
-        - label 实时协作编辑
-    - label 低价值 低成本
-      lists
-        - label 主题换肤
-        - label 动效优化
-    - label 低价值 高成本
-      lists
-        - label 3D可视化
-        - label 语音交互
-theme
-  palette #00b894 #0984e3 #fdcb6e #d63031`
-
-const quadrantSyntax2 = `infographic compare-quadrant-quarter-simple-card
-data
-  title 需求四象限分析
-  compares
-    - label 紧急且重要
-      lists
-        - label 安全漏洞修复
-        - label 核心功能上线
-    - label 重要不紧急
-      lists
-        - label 架构升级
-        - label 技术债清理
-    - label 紧急不重要
-      lists
-        - label UI微调
-        - label 文案优化
-    - label 不紧急不重要
-      lists
-        - label 彩蛋功能
-        - label 实验性特性
-theme
-  palette #d63031 #0984e3 #fdcb6e #636e72`
+function Chart({ template, syntax, height = "300px" }: { template: string; syntax: string; height?: string }) {
+  const ref = useInfographic({ syntax, height })
+  return (
+    <div>
+      <div ref={ref} className="w-full rounded-xl border p-2" />
+      <p className="mt-1 text-xs text-muted-foreground">模板: {template}</p>
+    </div>
+  )
+}
 
 export default function ChartsPage() {
   return (
     <main className="min-h-screen bg-background">
-      <div className="sticky top-0 z-10 flex items-center justify-between border-b bg-card/80 backdrop-blur px-6 py-3">
-        <h1 className="text-lg font-semibold">图表示例</h1>
-        <Badge variant="outline" className="text-orange-600 border-orange-300">仅开发环境 · 构建时不打包</Badge>
+      <div className="sticky top-0 z-10 border-b bg-card/80 backdrop-blur">
+        <div className="container mx-auto flex items-center justify-between px-6 py-3">
+          <div className="flex items-center gap-3">
+            <Link to="/">
+              <Button variant="ghost" size="sm">
+                <HomeIcon className="size-4" aria-hidden="true" />
+                主页
+              </Button>
+            </Link>
+            <h1 className="text-lg font-semibold">图表示例</h1>
+          </div>
+          <Badge variant="outline" className="text-orange-600 border-orange-300">
+            仅开发环境 · 构建时不打包
+          </Badge>
+        </div>
       </div>
 
       <div className="container mx-auto px-6 py-8 space-y-12">
 
-        <ChartSection title="List 列表" description="要点列举、功能清单、特性介绍">
-          <ChartCard syntax={listRowSyntax} label="list-row-horizontal-icon-arrow · 产品核心优势" />
-          <ChartCard syntax={listGridSyntax} label="list-grid-badge-card · 技术栈清单" />
-        </ChartSection>
+        {/* ─── 1. Chart 数据图 ─── */}
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-xl font-bold">Chart 数据图</h2>
+            <p className="text-sm text-muted-foreground">用于展示数值型数据的统计与对比</p>
+          </div>
+
+          <Example title="column — 数据对比" desc="柱状图展示季度营收对比">
+            <Chart template="chart-column-simple" syntax={`infographic chart-column-simple
+data
+  title 季度营收（万元）
+  values
+    - label Q1
+      value 4500
+    - label Q2
+      value 5200
+    - label Q3
+      value 4800
+    - label Q4
+      value 6100`} />
+          </Example>
+        </section>
 
         <Separator />
 
-        <ChartSection title="Sequence 序列" description="步骤流程、时间线、路线图">
-          <ChartCard syntax={sequenceStepsSyntax} label="sequence-ascending-steps · 项目交付流程" />
-          <ChartCard syntax={sequenceTimelineSyntax} label="sequence-timeline-simple · 公司发展历程" />
-        </ChartSection>
+        {/* ─── 2. Sequence 序列 ─── */}
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-xl font-bold">Sequence 序列</h2>
+            <p className="text-sm text-muted-foreground">用于展示有序流程、步骤与阶段</p>
+          </div>
+
+          <Example title="steps — 步骤流程" desc="展示有序操作流程">
+            <Chart template="sequence-steps-simple" syntax={`infographic sequence-steps-simple
+data
+  sequences
+    - label 填写手机号
+      icon phone
+    - label 验证码验证
+      icon shield check
+    - label 设置密码
+      icon lock
+    - label 完善信息
+      icon user
+    - label 注册完成
+      icon circle check`} />
+          </Example>
+
+          <Example title="timeline — 时间线" desc="按时间节点展示里程碑">
+            <Chart template="sequence-timeline-simple" syntax={`infographic sequence-timeline-simple
+data
+  title 公司发展历程
+  sequences
+    - label 2020年
+      desc 公司成立，获得天使轮融资
+      icon rocket
+    - label 2021年
+      desc 产品上线，用户突破10万
+      icon star
+    - label 2022年
+      desc 完成A轮融资，团队扩至200人
+      icon chart line
+    - label 2023年
+      desc 进军海外市场，营收破亿
+      icon globe`} />
+          </Example>
+        </section>
 
         <Separator />
 
-        <ChartSection title="Chart 数据图" description="数值对比、占比分析、趋势变化">
-          <ChartCard syntax={chartColumnSyntax} label="chart-column-simple · 季度营收对比" />
-          <ChartCard syntax={chartPieSyntax} label="chart-pie-compact-card · 用户来源分布" />
-        </ChartSection>
+        {/* ─── 3. Comparison 对比 ─── */}
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-xl font-bold">Comparison 对比</h2>
+            <p className="text-sm text-muted-foreground">用于展示事物之间的对比与差异</p>
+          </div>
+
+          <Example title="swot — SWOT分析" desc="经典四象限SWOT分析">
+            <Chart template="compare-swot" syntax={`infographic compare-swot
+data
+  title 公司SWOT分析
+  compares
+    - label 优势
+      children
+        - label 核心技术自主可控
+        - label 团队经验丰富
+    - label 劣势
+      children
+        - label 品牌知名度不足
+        - label 资金储备有限
+    - label 机会
+      children
+        - label 政策支持数字经济
+        - label 市场需求增长
+    - label 威胁
+      children
+        - label 巨头入局竞争
+        - label 技术迭代加速`} />
+          </Example>
+
+          </section>
 
         <Separator />
 
-        <ChartSection title="Comparison 对比" description="SWOT分析、方案对比、双向对比">
-          <ChartCard syntax={compareSwotSyntax} label="compare-swot · 产品SWOT分析" height="360px" />
-          <ChartCard syntax={compareBinarySyntax} label="compare-binary-horizontal-simple-fold · 自建vs采购" />
-        </ChartSection>
+        {/* ─── 4. Hierarchy 层级 ─── */}
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-xl font-bold">Hierarchy 层级</h2>
+            <p className="text-sm text-muted-foreground">用于展示上下级与包含关系</p>
+          </div>
+
+          <Example title="structure — 组织架构" desc="展示公司组织层级">
+            <Chart template="hierarchy-structure" syntax={`infographic hierarchy-structure
+data
+  title 公司组织架构
+  root
+    label CEO
+    icon crown
+    children
+      - label CTO
+        icon code
+        children
+          - label 前端组
+          - label 后端组
+      - label COO
+        icon briefcase
+        children
+          - label 运营部
+          - label 市场部`} />
+          </Example>
+
+          </section>
 
         <Separator />
 
-        <ChartSection title="Hierarchy 层级" description="组织架构、分类树、思维导图">
-          <ChartCard syntax={hierarchyStructureSyntax} label="hierarchy-structure · 公司组织架构" height="320px" />
-          <ChartCard syntax={hierarchyTreeSyntax} label="hierarchy-tree-curved-line · 产品功能模块" height="320px" />
-        </ChartSection>
+        {/* ─── 5. List 列表 ─── */}
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-xl font-bold">List 列表</h2>
+            <p className="text-sm text-muted-foreground">用于展示无序的条目集合</p>
+          </div>
+
+          <Example title="grid — 功能清单" desc="网格排列的卡片式清单">
+            <Chart template="list-grid-compact-card" syntax={`infographic list-grid-compact-card
+data
+  title 产品功能模块
+  lists
+    - label 用户管理
+      icon users
+    - label 权限控制
+      icon lock
+    - label 数据分析
+      icon chart bar
+    - label 消息通知
+      icon bell
+    - label 文件管理
+      icon folder
+    - label 审计日志
+      icon file text`} />
+          </Example>
+
+          <Example title="row — 横向列表" desc="横向排列的合作伙伴展示">
+            <Chart template="list-row-horizontal-icon-arrow" syntax={`infographic list-row-horizontal-icon-arrow
+data
+  title 合作伙伴
+  lists
+    - label 阿里云
+      desc 云计算基础设施
+      icon cloud
+      value 40
+    - label 华为
+      desc 通信与硬件合作
+      icon cpu
+      value 30
+    - label 腾讯
+      desc 社交生态对接
+      icon message circle
+      value 20
+    - label 字节跳动
+      desc 内容与流量合作
+      icon video
+      value 10`} />
+          </Example>
+        </section>
 
         <Separator />
 
-        <ChartSection title="Relation 关系" description="系统架构、流程依赖、节点关系">
-          <ChartCard syntax={relationDagreSyntax} label="relation-dagre-flow · 系统架构调用" height="320px" />
-          <ChartCard syntax={relationFlowSyntax} label="relation-dagre-flow · 前端构建流程" height="320px" />
-        </ChartSection>
+        {/* ─── 6. Relation 关系 ─── */}
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-xl font-bold">Relation 关系</h2>
+            <p className="text-sm text-muted-foreground">用于展示节点之间的连接与流向</p>
+          </div>
+
+          <Example title="dagre — 流程图" desc="带方向的关系图，适合业务流程和架构图">
+            <Chart template="relation-dagre-flow-tb-simple-circle-node" syntax={`infographic relation-dagre-flow-tb-simple-circle-node
+data
+  title 订单处理流程
+  nodes
+    - id a
+      label 客户下单
+      group input
+    - id b
+      label 订单审核
+      group process
+    - id c
+      label 库存检查
+      group process
+    - id d
+      label 物流配送
+      group output
+    - id e
+      label 客户签收
+      group output
+  relations
+    a -> b
+    b -> c
+    c -> d
+    d -> e`} />
+          </Example>
+        </section>
 
         <Separator />
 
-        <ChartSection title="Quadrant 象限" description="优先级矩阵、四象限决策分析">
-          <ChartCard syntax={quadrantSyntax} label="compare-quadrant · 功能优先级矩阵" />
-          <ChartCard syntax={quadrantSyntax2} label="compare-quadrant · 需求四象限分析" />
-        </ChartSection>
+        {/* ─── 7. Quadrant 象限 ─── */}
+        <section className="space-y-6">
+          <div>
+            <h2 className="text-xl font-bold">Quadrant 象限</h2>
+            <p className="text-sm text-muted-foreground">用于展示四象限分类与定位</p>
+          </div>
+
+          <Example title="quarter — 四象限分析" desc="标准四象限分类展示">
+            <Chart template="quadrant-quarter-simple-card" syntax={`infographic quadrant-quarter-simple-card
+data
+  title 时间管理矩阵
+  compares
+    - label 重要且紧急
+      icon alert triangle
+    - label 重要不紧急
+      icon calendar
+    - label 紧急不重要
+      icon bell
+    - label 不重要不紧急
+      icon trash`} />
+          </Example>
+        </section>
+
+        {/* ─── 查看更多 ─── */}
+        <div className="flex justify-center pt-8">
+          <a
+            href="https://infographic.antv.vision/gallery"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ExternalLinkIcon className="size-4" />
+            查看更多模板（官方画廊 200+ 模板）
+          </a>
+        </div>
 
       </div>
     </main>
