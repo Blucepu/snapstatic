@@ -330,7 +330,39 @@ export default function ChartsPage() {
 
 ---
 
-## 步骤八：验证
+## 步骤八：创建部署配置文件
+
+在项目根目录创建 `deploy.json`：
+
+```json
+{
+  "api": {
+    "baseUrl": "https://v2-api.zbanx.com"
+  },
+  "oss": {
+    "region": "oss-cn-hangzhou",
+    "bucket": "ai-code-static-web-demo",
+    "domain": "t.tbanx.cn"
+  },
+  "build": {
+    "command": "bun run build",
+    "outputDir": "dist"
+  }
+}
+```
+
+在项目根目录创建 `.env`（已 gitignore，仅用于本地开发）：
+
+```
+ALIBABA_CLOUD_ACCESS_KEY_ID=
+ALIBABA_CLOUD_ACCESS_KEY_SECRET=
+```
+
+> `.env` 已包含在 `.gitignore` 中，不会提交到仓库。部署前需填入真实的阿里云 OSS 凭证。
+
+---
+
+## 步骤九：验证
 
 ```bash
 bun dev
@@ -368,9 +400,11 @@ grep -r "ComponentsPage\|ChartsPage" dist/
 │   └── index.css
 ├── index.html
 ├── components.json
+├── deploy.json
 ├── vite.config.ts
 ├── tsconfig.json
 ├── tsconfig.app.json
+├── .env
 └── package.json
 ```
 
