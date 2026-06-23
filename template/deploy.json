@@ -1,0 +1,14 @@
+{
+  "api": {
+    "baseUrl": "https://v2-api.zbanx.com"
+  },
+  "oss": {
+    "region": "oss-cn-hangzhou",
+    "bucket": "ai-code-static-web-demo",
+    "domain": "t.tbanx.cn"
+  },
+  "build": {
+    "command": "bun run build",
+    "outputDir": "dist"
+  }
+}
