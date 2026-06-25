@@ -1,6 +1,6 @@
 {
   "api": {
-    "baseUrl": "https://v2-api.zbanx.com"
+    "baseUrl": "https://abx-api.tbanx.cn"
   },
   "oss": {
     "region": "oss-cn-hangzhou",
