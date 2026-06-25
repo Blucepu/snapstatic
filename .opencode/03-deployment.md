@@ -28,14 +28,14 @@
 bun x zbanx deploy
 ```
 
-> 不要手动执行 `bun run build`，不要手动上传 OSS，不要检查 `deploy.json` 或 `.env` 的内容。
+> 不要手动执行 `bun run build`，不要手动上传 OSS，不要检查 `deploy.json` 的内容。
 > `zbanx deploy` 会自动读取项目配置、执行构建命令、上传到 OSS。
 
 ---
 
 ## 注意事项
 
-- `.env` 中的 OSS 凭证由 `zbanx deploy` 自动读取，无需手动处理
+- OSS 凭证由首次登录后自动缓存到 `~/.zbx/session.json`，无需手动处理
 - 密码仅用于首次登录，不要硬编码到代码中
 - 登录失败 code 300001 = 密码错误或账号不存在
 - 如需重新登录：`rm -f ~/.zbx/session.json`

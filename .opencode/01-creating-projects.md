@@ -351,15 +351,6 @@ export default function ChartsPage() {
 }
 ```
 
-在项目根目录创建 `.env`（已 gitignore，仅用于本地开发）：
-
-```
-ALIBABA_CLOUD_ACCESS_KEY_ID=
-ALIBABA_CLOUD_ACCESS_KEY_SECRET=
-```
-
-> `.env` 已包含在 `.gitignore` 中，不会提交到仓库。部署前需填入真实的阿里云 OSS 凭证。
-
 ---
 
 ## 步骤九：验证

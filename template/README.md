@@ -49,7 +49,7 @@ bun x zbanx deploy            # 构建 + 部署到阿里云 OSS
 bun x zbanx deploy --no-build # 仅上传已有 dist/
 ```
 
-需在项目根目录配置 `deploy.json` 和 `.env`。
+需在项目根目录配置 `deploy.json`。首次部署 `zbanx deploy` 会引导登录自动获取 OSS 凭证。无需手动配置 `.env`。
 
 ## 项目结构
 
