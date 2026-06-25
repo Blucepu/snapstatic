@@ -42,19 +42,42 @@ bun x zbanx init <project-name>
 
 ## 2. 部署项目：`deploy`
 
-详见 `03-deployment.md`。核心命令：
+> **不要**手动构建、**不要**手动上传 OSS、**不要**在对话中收集账号密码 — `zbanx deploy` 全部自动处理。
 
 ```bash
 bun x zbanx deploy              # 构建 + 上传
-bun x zbanx deploy --no-build   # 跳过构建，仅上传
+bun x zbanx deploy --no-build   # 跳过构建，仅上传已有 dist/
 ```
 
 **前置**
 - 当前目录含 `deploy.json`
 - 首次部署需在终端交互式登录（账号密码）
 
+**登录交互（仅首次）**
+
+首次部署时，`zbanx deploy` 会自动在终端提示用户输入账号密码：
+
+```
+  +--- ZBX Login -----------------------------+
+  |  Server: https://v2-api.zbanx.com         |
+  +------------------------------------------+
+  |  Account: user@example.com
+  |  Password: ******
+  +------------------------------------------+
+```
+
+**AI 行为**：
+- **不要**在对话中询问账号密码
+- 提示用户："请在终端中完成登录"
+- 登录成功后会话缓存到 `~/.zbx/session.json`，后续部署无需重复登录
+
 **完成后**
-- 输出 OSS 访问 URL，AI 必须明确告知用户
+- CLI 输出访问 URL，AI **必须**明确告知用户
+
+```
+  [OK] Deploy complete! 42 files, 1.2 MB
+  > Access URL: https://example.com/web/12345/my-site/index.html
+```
 
 ---
 
