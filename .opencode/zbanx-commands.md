@@ -11,6 +11,8 @@
 
 | 命令 | 作用 | 是否需要交互 |
 |------|------|-------------|
+| `bun x zbanx login` | 登录账号并保存凭证 | 是 |
+| `bun x zbanx logout` | 清除缓存的登录凭证 | 否 |
 | `bun x zbanx init <name>` | 创建新项目 | 否（可能需代理） |
 | `bun x zbanx deploy` | 构建 + 部署到 OSS | 首次需登录 |
 | `bun x zbanx list` | 列出当前账号所有已部署项目 | 否 |
@@ -175,6 +177,37 @@ bun x zbanx delete <project-name> -f     # 跳过确认（CI 用）
 
 ---
 
+## 5. 登录账号：`login`
+
+> 在列项目或删除项目之前，若提示 `No login session found`，先让用户执行 `login`。
+
+```bash
+bun x zbanx login
+```
+
+**执行流程**
+1. `zbanx login` 会在终端提示输入账号（邮箱）和密码
+2. 验证通过后，凭证缓存到 `~/.zbx/session.json`
+3. 后续 `deploy`、`list`、`delete` 自动使用缓存的凭证
+
+**AI 行为**
+- **不要**在对话中询问账号密码
+- 提示用户："请在终端中完成登录"
+
+---
+
+## 6. 退出登录：`logout`
+
+清除缓存的登录凭证。
+
+```bash
+bun x zbanx logout
+```
+
+等价于手动删除 `rm -f ~/.zbx/session.json`。
+
+---
+
 ## GitHub 下载问题（中国大陆用户常见）
 
 `zbanx init` 会从 GitHub 下载模板 ZIP 包，国内网络常常卡住或超时。
@@ -249,7 +282,7 @@ bun x zbanx init <project-name>
 | 错误信息 | 含义 | AI 应对 |
 |---------|------|--------|
 | `Config file deploy.json not found` | 当前目录非 zbanx 项目 | 引导进入项目目录，或执行 `init` |
-| `No login session found` | 未登录 | 引导执行 `deploy` 完成首次登录 |
+| `No login session found` | 未登录 | 引导执行 `zbanx login` |
 | `密码错误，请重试` | delete 密码验证失败 | 提示检查密码，或 `rm -f ~/.zbx/session.json` 重新登录 |
 | `Invalid password or account not found` | deploy 登录失败 | 提示检查账号密码 |
 | `Project "xxx" not found or already deleted` | 项目不存在 | 建议 `zbanx list` 查看可用项目 |
@@ -271,3 +304,9 @@ bun x zbanx init <project-name>
 
 **用户**："帮我删掉 my-blog"
 → AI：先 `zbanx list` 确认存在 → 二次确认 → `zbanx delete my-blog` → 提示用户终端输入密码
+
+**用户**："帮我登录"
+→ AI：执行 `bun x zbanx login` → 提示用户在终端输入账号密码
+
+**用户**："退出登录"
+→ AI：执行 `bun x zbanx logout`
