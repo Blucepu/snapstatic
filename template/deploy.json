@@ -1,12 +1,4 @@
 {
-  "api": {
-    "baseUrl": "https://abx-api.tbanx.cn"
-  },
-  "oss": {
-    "region": "oss-cn-hangzhou",
-    "bucket": "ai-code-static-web-demo",
-    "domain": "t.tbanx.cn"
-  },
   "build": {
     "command": "bun run build",
     "outputDir": "dist"

@@ -98,7 +98,7 @@ bun x zbanx deploy --no-build   # 跳过构建，仅上传已有 dist/
 ```
 
 **前置**
-- 当前目录含 `deploy.json`
+- 当前目录含 `deploy.json`（仅含 `build` 配置）
 - 首次部署需在终端交互式登录（账号密码）
 
 **登录交互（仅首次）**
@@ -107,7 +107,7 @@ bun x zbanx deploy --no-build   # 跳过构建，仅上传已有 dist/
 
 ```
   +--- ZBX Login -----------------------------+
-  |  Server: https://v2-api.zbanx.com         |
+  |  Server: https://abx-api.tbanx.cn         |
   +------------------------------------------+
   |  Account: user@example.com
   |  Password: ******
@@ -124,7 +124,7 @@ bun x zbanx deploy --no-build   # 跳过构建，仅上传已有 dist/
 
 ```
   [OK] Deploy complete! 42 files, 1.2 MB
-  > Access URL: https://example.com/web/12345/my-site/index.html
+  > Access URL: https://t.tbanx.cn/web/12345/my-site/index.html
 ```
 
 ---
@@ -139,8 +139,8 @@ bun x zbanx list
 ```
   Account: myaccount (ID: 12345)
 
-  my-app               https://example.com/web/12345/my-app/index.html
-  another-site         https://example.com/web/12345/another-site/index.html
+  my-app               https://t.tbanx.cn/web/12345/my-app/index.html
+  another-site         https://t.tbanx.cn/web/12345/another-site/index.html
 
   2 project(s) found.
 ```
@@ -283,6 +283,7 @@ bun x zbanx init <project-name>
 |---------|------|--------|
 | `Config file deploy.json not found` | 当前目录非 zbanx 项目 | 引导进入项目目录，或执行 `init` |
 | `No login session found` | 未登录 | 引导执行 `zbanx login` |
+| `Missing OSS credentials` | 未登录或 session 失效 | 引导执行 `zbanx login` |
 | `密码错误，请重试` | delete 密码验证失败 | 提示检查密码，或 `rm -f ~/.zbx/session.json` 重新登录 |
 | `Invalid password or account not found` | deploy 登录失败 | 提示检查账号密码 |
 | `Project "xxx" not found or already deleted` | 项目不存在 | 建议 `zbanx list` 查看可用项目 |
